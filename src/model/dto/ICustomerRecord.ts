@@ -1,7 +1,13 @@
+
+
+import { IProduct } from "./IProduct";
+import { ICustomer } from "./ICustomer";
+
+
 export interface ICustomerRecord{
     Title:string;
-    Product:string;
+    ProductInfo:IProduct
+    CustomerInfo:ICustomer
     DatePurchased:Date;
-    IsVIP:boolean;
-    Email:string;
+    DateExpires:Date;
 }

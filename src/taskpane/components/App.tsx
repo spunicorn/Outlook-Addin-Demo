@@ -1,13 +1,25 @@
 import * as React from "react";
 import { Button, ButtonType } from "office-ui-fabric-react";
 import Header from "./Header";
+import CustomerDetailsList from "./CustomerDetailslist"
 import HeroList, { HeroListItem } from "./HeroList";
 import Progress from "./Progress";
 import { GraphClient } from "../../dal/GraphClient";
 import { IEmail } from "../../model/dto/IEmail";
 import { SPClient } from "../../dal/SPClient";
 import { ICustomerRecord } from "../../model/dto/ICustomerRecord";
+import { Announced } from 'office-ui-fabric-react/lib/Announced';
+// import { TextField, ITextFieldStyles } from 'office-ui-fabric-react/lib/TextField';
+import { DetailsList, DetailsListLayoutMode, Selection, IColumn } from 'office-ui-fabric-react/lib/DetailsList';
+import { MarqueeSelection } from 'office-ui-fabric-react/lib/MarqueeSelection';
+import { Fabric } from 'office-ui-fabric-react/lib/Fabric';
+import { mergeStyles } from 'office-ui-fabric-react/lib/Styling';
 /* global Button, Header, HeroList, HeroListItem, Progress */
+
+const exampleChildClass = mergeStyles({
+  display: 'block',
+  marginBottom: '10px',
+});
 
 export interface AppProps {
   title: string;
@@ -56,9 +68,7 @@ export default class App extends React.Component<AppProps, AppState> {
       userDisplayName
     });
   }
-  searchForCustomer = async (email:string)=>{
-
-  }
+  
   click = async () => {
     let subject = Office.context.mailbox.item.normalizedSubject;
     let emails = await this.graphClient.searchMyMailbox(subject);
@@ -93,28 +103,15 @@ export default class App extends React.Component<AppProps, AppState> {
           >
             Search similar emails
           </Button>
-        {/* {this.state.relatedEmails && this.state.relatedEmails.map(email =>{
+        {this.state.relatedEmails && this.state.relatedEmails.map(email =>{
           return <div>
             Subject: {email.subject}
             Sender: {email.sender.emailAddress.name}
             Preview: {email.bodyPreview}
           </div>;
-        })} */}
-        <Button
-            className="ms-welcome__action"
-            buttonType={ButtonType.hero}
-            iconProps={{ iconName: "ChevronRight" }}
-            onClick={this.searchSP.bind(this)}
-          >
-            Get customer records
-          </Button>
-          {this.state.customerRelatedProducts && this.state.customerRelatedProducts.map(customerRecord =>{
-          return <div>
-            Email: {customerRecord.Email}
-            IsVIP: {customerRecord.IsVIP}
-            ProductName: {customerRecord.Product}
-          </div>; 
         })}
+       
+      <CustomerDetailsList spClient={this.spClient}></CustomerDetailsList>
       </div>
     );
   }
